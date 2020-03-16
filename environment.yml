@@ -1,0 +1,18 @@
+name: valpolab
+channels:
+  - conda-forge
+dependencies:
+  - python=3
+  - numpy
+  - matplotlib
+  - siphon
+  - xarray
+  - netCDF4
+  - cartopy
+  - pint
+  - pandas
+  - eofs
+  - jupyterlab
+  - pip
+  - pip:
+     - git+https://github.com/Unidata/MetPy.git
