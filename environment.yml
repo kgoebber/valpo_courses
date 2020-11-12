@@ -3,16 +3,17 @@ channels:
   - conda-forge
 dependencies:
   - python=3
+  - arm_pyart
   - numpy
   - matplotlib
   - siphon
   - xarray
   - netCDF4
-  - cartopy=0.17
+  - cartopy
   - pint
   - pandas
   - eofs
   - jupyterlab
   - pip
   - pip:
-     - git+https://github.com/Unidata/MetPy.git
+     - metpy==1.0rc2
