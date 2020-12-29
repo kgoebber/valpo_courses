@@ -9,11 +9,10 @@ dependencies:
   - siphon
   - xarray
   - netCDF4
+  - metpy
   - cartopy
   - pint
   - pandas
   - eofs
   - jupyterlab
   - pip
-  - pip:
-     - metpy==1.0rc2

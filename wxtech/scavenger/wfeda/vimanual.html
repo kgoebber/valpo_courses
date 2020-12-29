@@ -1,0 +1,747 @@
+<HTML>
+<HEAD>
+<TITLE>vi Manual</TITLE>
+</HEAD>
+
+<body bgcolor="#ffffff" link="#880000" vlink="#440000">
+
+<center>
+<IMG SRC="/pics/logo_no_move.gif" ALT="FSU Computer Science">
+</center>
+<p>
+
+<h1>vi Manual</h1>
+
+by Tony Chen, adchen@cs.fsu.edu
+(last changed Dec 7, 1993)
+
+<p>
+
+
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#starting">Starting vi</a></li>
+<li><a href="#cursor">Cursor keys</a></li>
+<li><a href="#movement">Word and Line Movement keys</a></li>
+<li><a href="#count">Number counts</a></li>
+<li><a href="#cancel">Cancelling commands</a></li>
+<li><a href="#status">Status line</a></li>
+<li><a href="#scroll">Scroll commands</a></li>
+<li><a href="#delete">Delete commands</a></li>
+<li><a href="#input">Input/editing commands</a></li>
+<li><a href="#search">Search</a></li>
+<li><a href="#copypaste">Copy, paste, undo, repeat</a></li>
+<li><a href="#excommands">Ex commands (file commands)</a></li>
+<li><a href="#searchreplace">Search and replace</a></li>
+</ul>
+
+<hr>
+
+<h2>vi Editor (visual display editor)</h2>
+ 
+Unlike most word processors you may be used to, vi does not use modifier keys 
+in command sequences.  Typically on a PC, you would use some combination
+of function keys, alt, shift and ctrl.  Vi was written to run on a text based
+system, and so almost entirely uses no modifier keys for commands.
+
+<p>
+
+Vi has two operational modes:  COMMAND mode and INPUT mode.
+
+<p>
+
+When you start vi, you are in COMMAND mode.  When you add, insert, replace, 
+or change text, you need to enter INPUT mode.  Pressing the ESC (Escape) key at 
+any time, will return you to the command mode.  If you are already in command
+mode, your terminal will simply beep you, telling you so.
+
+<p>
+ 
+For the next several sections, we will be in command mode only.  We will
+learn about the input mode once we know how to navigate around in a file.
+
+<p>
+
+<a name="starting"</a>
+<h2>Starting vi</h2>
+ 
+To invoke vi with a new (blank) file, simply type "vi" at the prompt:
+ 
+<p>
+
+<tt>>> prompt% vi </tt>
+
+<p>
+
+You should get a screen with the cursor blinking at the top left, and  
+tildes "~" along the left margin.  The tildes indicate that those lines  
+are completely void of any characters (spaces, tabs, returns included).
+
+<p>
+ 
+To edit an existing file, type "vi" followed by the filename:
+ 
+<p>
+
+<tt>>> prompt% vi filename </tt>
+ 
+<p>
+
+You should see your file, along with a status line along the bottom 
+stating the name of the file, the number of lines, and the number of 
+characters in that file:
+
+<p>
+
+Example:   <tt> "pton.list" 399 lines, 22543 characters</tt>
+
+<p>
+ 
+To view a file only (you will not be making any changes, or want to prevent 
+any accidental changes) type "view" followed by the filename:
+
+<p>
+
+<tt>>> prompt% view filename</tt>
+
+<p>
+ 
+<a name="cursor"></a>
+<h2>Cursor Keys</h2>
+You can move the cursor around using the movement keys.  "h" and "l" moves 
+the cursor left and right;  "j" and "k" moves down and up.
+ 
+<p>
+
+<pre>
+                                  (up)    
+     
+                                   k         
+                   (left)     h         l    (right)
+                                   j       
+ 
+                                 (down)
+</pre>
+
+<p>
+
+NOTE:  The arrow keys work in vi as well, but not all terminals may have 
+them.  In any case using hjkl is recommended, since it keeps your hands on 
+the keyboard, and so you don't have to reposition your hand everytime you 
+move the cursor.
+
+Alternative keys: 
+
+<p>
+ 
+<pre>
+                                  (up)    
+     
+                                   -         
+             (left)  Backspace            (spacebar) (right)
+                                   +       
+ 
+                                 (down)
+</pre>
+
+<a name="movement"></a>
+<h2>Word and Line Movement Keys</h2>
+If you're editing a file that's primarily text (that is, words and 
+sentences and not a ton of computer code) there are more convenient 
+ways to move around than one column/row at a time.
+
+<p>
+
+We're still in command mode.  To move to the beginning of the next word, 
+type "w".  To move to the beginning of the previous word, type "b".  You 
+can also move to the end of the next word, type "e".
+
+<pre>
+>> Beginning of next word      w
+>> Beginning of prev word      b
+</pre>
+
+<p>
+
+You can also jump to the start and end of lines if you're somewhere in the 
+middle.  0 (zero) or ^ (caret) jumps to the start, "$" jumps to the end.
+
+<pre>
+>> Start of line               0 (zero) or ^
+>> End of line                 $
+</pre>
+
+<p>
+ 
+If you're a fan of run-on sentences, you might want to jump from sentence
+to sentence.  Use "(" to move to the start of the previous sentence and ")" 
+to move to the start of the next sentence.
+
+<pre>
+>> Start of previous sentence   (
+>> Start of next sentence       )
+</pre>
+
+<p>
+
+We can jump in even larger units.  Using "{" and "}", we can jump to
+previous and next paragraphs.
+
+<pre>
+>> Start of previous paragraph  {
+>> Start of next paragraph      }
+</pre>
+
+<p>
+
+Also, if you hit RETURN at any time, you will move to the beginning of the 
+*next* line down.
+
+<pre>
+>> Start of following line:  RETURN
+</pre>
+
+<p>
+There are also several commands to jump to relative locations on the screen 
+and in the file:
+ 
+<pre>
+>> Move to top of screen         H (home)
+>> Move to middle of screen      M (middle)
+>> Move to last line of screen   L (last)
+</pre>
+
+<p>
+
+One other useful command, is "G", which let's you jump to the end of your
+file:
+
+<pre>
+>> Last line in file             G
+</pre>
+
+<p>
+ 
+In the next section we'll see how to jump to any line in a file.
+
+<a name="count"></a>
+<h2>Number Counts</h2>
+Much of the time even using the word movement keys is too slow.  If we
+could jump any number of words/lines instead of having to press the keys
+each time, things would be much easier.  Vi, therefore, provides a way
+to repeat commands. 
+
+<pre>
+>> To repeat command X, n times:  nX
+</pre>
+
+<p>
+
+Examples:<br>
+
+<pre>
+To move 10 lines down         10j
+To move 4 characters left     4h
+To move 5 words right         5w
+</pre>
+
+<p>
+
+Number counts can be used with almost all movement and editing commands.  
+As you know, "G" by itself moves to the last line.  To move to the first 
+line of a file, type "1G".  To move to the nth line, type "nG".
+
+<pre>
+>> First line in file:  1G
+</pre>
+
+<p>
+
+Example:  45th line in file   45G
+ 
+<a name="cancel"></a> 
+<h2>Cancelling Commands</h2>
+If at any time, you want to cancel a number count or any other command
+before you finish typing it, you can always hit ESCAPE.
+
+<a name="status"></a>
+<h2>Status Line</h2>
+Sometimes when you jump around in a file a lot, you lose track of where you 
+are.  CTRL-G will give your current position and the file name you're editing 
+at the bottom of the screen.  It should look something like:
+
+<p>
+ 
+<tt>"filename" line 20 of 399 --5%--</tt>
+ 
+<a name="scroll">
+<h2>Scroll Commands</h2>
+When you're simply reading through a file, often times you just want to 
+page through the text and not make any changes.  Having to type "40j" every 
+page would be too tedious.
+ 
+<p>
+
+Fortunately, vi has a set of scroll commands.  To scroll down a screen 
+(forward), press CTRL-f.  To scroll back a screen (backwards), press CTRL-
+b.  To scroll up half a screen, CTRL-u.  To scroll down half a screen, 
+CTRL-d.
+
+<pre>
+>> Scroll forward one screen    CTRL-f
+>> Scroll back one screen       CTRL-b        
+
+>> Scroll up half a screen      CTRL-u
+>> Scroll down half a screen    CTRL-d
+</pre>
+
+<a name="delete"></a>
+<h2>Delete Commands</h2>
+To delete a single character, type "x". This deletes the character directly 
+under the cursor and moves the remaining text to the right one space to the 
+left.
+
+<pre>
+>> To delete a single character at cursor      x
+</pre>
+
+We can combine number counts with "x" as well:
+
+<p>
+
+Example:<br>
+delete 4 characters: 4x
+
+<p>
+ 
+Of course, if you want to delete large sections of text, typing "9999x" is 
+a bit unwieldy.  Fortunately (as you may have guessed), vi has another 
+delete command, "d".
+
+<p>
+ 
+By now, you know how to move an distance in any direction by combining a 
+number with a movement key.  The delete commands work in a similar fashion.
+
+<p>
+
+"d" is always used with another command, never by itself.  We need to tell
+it which direction you want to delete and how far in that direction.  We 
+already know how to move any distance in any direction, right?  Now all we 
+do is combine  "d" with any movement key and we've learned almost all the 
+delete commands.
+
+<pre>
+>> To delete from cursor to start of next word         dw
+>> To delete from cursor to end of line                d$
+>> To delete from current line to bottom of screen     dL
+>> To delete one character before cursor               dh
+</pre>
+
+(Note:  "dl" works to delete one character at the cursor, but this is 
+exactly what "x" does.)
+
+<p>
+
+Vi does provide a short cut for d$.  You can use "D" to the same effect.
+
+<pre>
+>> Shortcut delete from cursor to end of line     D
+</pre>
+
+<p>
+ 
+To delete the current line, instead of having to type "^d$" (move to 
+start of line and delete to the end), vi has a shortcut command, "dd".
+
+<pre>
+>> To delete the current line   dd
+</pre>
+ 
+Of course, "d" is just like any other command, so we can combine a number 
+count with any "d" command.  
+
+<p>
+
+Examples:  
+Delete three words: 3dw  
+Delete three words: d3w
+
+<p>
+
+Two ways?  Which one is right?  Vi isn't picky.  They're both right.  
+Deleting three words once (d3w) is the same as delete one word three 
+times (3dw).
+
+<p>
+
+Now...what command would you use to delete 5 lines starting from the 
+current line?  
+
+<p>
+ 
+The expected way: 5dd
+Alternate way: 4dj
+
+<p>
+ 
+Why "4dj"?  Remember, deletion always occurs relative to the cursor 
+position when we give it a direction.  So "4dj" deletes the current line 
+and the 4 lines below it.  Similarly, "4dk" deletes 5 lines, the current line 
+and the 4 lines above it.
+
+<p>
+ 
+Other delete commands:
+
+<pre>
+>> Delete from current line to end of file     dG
+>> Delete from current line to start of file   d1G
+>> Delete line 5                               5Gdd 
+    (this is merely combining two commands, 5G and dd)
+</pre> 
+
+<a name="input"></a>
+<h2>Input/Editing Commands (finally!)</h2>
+Now that we know how to navigate through files and delete text from them 
+it's time we learn how to insert text.  There are six input modes:  append, 
+insert, change, open, substitute, and replace.  Each mode has two 
+invocations, lowercase first letter and uppercase first letter (i.e., "a" 
+and "A" for append).  
+ 
+<p>
+
+Remember that we always start in command mode.  As soon as you type any
+of the input commands (except "r" replace) you stay in input mode until 
+you hit ESCAPE.  So in order for you to go back any make changes in what 
+you've typed, just press ESC and move to where you have to go and enter 
+the appropriate input mode.
+
+<p>
+
+To enter text, use either insert (i or I) or append (a or A).
+
+<pre>
+>> Insert text before the cursor    i 
+>> Insert text after the cursor     a
+
+>> Insert text at start of line     I
+>> Insert text at end of line       A
+</pre>
+
+Number counts, of course, can be used to do repeated insertions of text.
+
+<pre>
+>> Insert 5 "newtext"       5inewtext<ESC> 
+
+Example:  insert 5 copies of "hello"      5ihello<ESC>
+</pre>
+
+If you need to insert blank lines, use open (o or O).
+
+<pre>
+>> Insert blank line below current line     o
+>> Insert blank line above current line     O
+</pre>
+
+(Just think of "lowercase = lower/below"  and "uppercase = uppper/above".)
+
+<p>
+
+Often times you want to type over something instead of having to insert
+new text and then delete old text.  To do this we use change.
+
+<pre>
+>> Change from cursor to end of line     C
+>> Change a word to "newtext"            cwnewtext
+>> Change entire line                    cc  (vi will blank out the entire
+                                              line)
+</pre>
+
+Note that when you use "C" vi will change the last character in the line
+to "$" to show you what how far your change in the text will delete the
+old text.
+
+<p>
+
+Similarly for "cw", vi will change the last character of the word you
+intend to change into "$".
+
+<p>
+
+Replace and substitute are fairly similar to change, although with subtle
+differences in usage.
+
+<pre>
+>> Replace character at cursor with x        rx
+>> Replace (overwrite) from cursor onward    R
+
+Examples replace with 5 "g"'s             5rg
+</pre>
+
+Note that "r" with or without a number count will replace and then return 
+you to command mode.  "R" stays in input mode.
+
+<pre>
+>> Substitute one or more characters for a single character    snewtext
+>> Substitute entire line                                      S
+</pre>
+
+<a name="search"></a>
+<h2>Search (see also <a href="#searchreplace">Search and Replace</a> later
+in this section)</h2>
+
+To jump a string or substring anywhere in your file, type "/" and the
+string you want to search for.
+
+<pre>
+>> Search for a string "foo"     /foo
+</pre>
+
+This search will move your cursor to the next occurrence (forwards  
+search) of "foo" if it exists.  You can jump to the next occurrence  
+either by typing "/" by itself, or "n".  If you want to search backwards,
+use "N".
+
+<pre>
+>> Repeat search forward     n or /
+>> Repeat search backward    N
+</pre>
+
+If you are at the last occurrence of a string, a repeat search forward (n
+or /) will start search again from the top of the file. If the pattern
+doesn't exist, it will give you the message "Pattern not found".
+
+<a name="copypaste"></a>
+<h2>Copy, Paste, Undo, Repeat</h2>
+Vi also has the capacity to copy and paste text.   Copying text is much
+like deleting text.  You give it the copy command and then a direction
+and distance in that direction.  The copy command is "y" (yank).
+
+<pre>
+>> Copy current line     yy  or Y
+>> Copy a word           yw
+>> Copy 4 words          y4w  or 4yw
+</pre>
+
+Now to paste what you've just copied, use the paste command, "p", to
+paste after the cursor, "P" to paste before the cursor.
+
+<pre>
+>> Paste after cursor    p
+>> Paste before cursor   P
+</pre>
+
+What about cut n' pasting?  You, in fact, already know how to cut and
+paste.  The delete commands automatically save the text you last deleted
+into the paste buffer.  It's important to note that using the "x" command
+only deletes one character at a time, and therefore vi only saves each
+character individually.  If you type "x" repeatedly and try to paste,
+you will only paste one letter.
+
+<p>
+
+However, if you use a number count with x, like "25x", paste *will* insert
+all 25 characters.
+
+<pre>
+>> Reversing two lines      ddp
+>> Reverse two characters   xp
+</pre>
+
+To paste what you previously pasted again, but somewhere else, go to
+your next point of insertion, and type Ctrl-@.
+
+<pre>
+>> Insert previously pasted text here        ^@ (max of 128 chars)
+</pre>
+
+You can also paste text without having to move your cursor to the location
+you want to paste to.
+
+<pre>
+>> Paste current line after line 5  :t 5
+>> Paste line x after line 5        :xt 5
+>> Paste line 9 after line 5        :9t 5
+</pre>
+
+If you want to move the text, instead of just pasting, use :m.
+
+<pre>
+>> Move current line after line 5   :m 5
+>> Move line x after line 5         :xt 5
+>> Move line 9 after line 5         :9t 5
+</pre>
+
+Of course, all this cutting and pasting would be rather dangerous if we 
+couldn't reverse the changes if we don't like it.  So of course vi has
+an undo command, and as you'd expect, it's the letter "u".
+
+Undo comes in two forms, like all the other commands:  lowercase and
+uppercase.
+
+<pre>
+>> Undo last modification                u
+>> Undo all changes on a given line      U
+</pre>
+
+"U" will undo all changes on a given line *only* if you keep the cursor on
+that line.  As soon as you move the cursor to another line, you cannot
+undo all changes on that line.  You can still undo the last change 
+however using "u". 
+
+If you want to repeat the last editing command you did, use "."
+
+<a name="excommands"></a>
+<h2>ex Commands (saving files, opening files, quiting vi)</h2>
+Before vi was written, the only way to edit files was to use the line
+editor, ex.  You had could only process one line at a time.  Nowadays,
+there's no need to rough it anymore, but vi carries over some of the
+file saving, opening, and quitting commands.
+
+<p>
+
+The ex commands are all invoked with the colon, ":".  Once you type
+":", vi will give you the ex prompt ":" in the lower left corner.
+
+<p>
+<b>Saving and Quiting</b><br>
+Once you finish your editing, you'll want to save your work and exit vi.
+There happen to three ways to quit and save.
+
+<pre>
+>> To write (save) to file and quit  -->   :wq
+                                            :x
+                                            ZZ   (no colon)
+</pre>
+
+<b>Saving only</b><br>
+Often times you'll want to save your work while still working on it
+(in case you accidentally get logged out, or the machine crashes, or
+you somehow lose your changes).  To do this, simply type ":w".
+
+<pre>
+>> To write (save) to file     -->   :w
+>> To write (save) to newfile  -->   :w filename
+</pre>
+
+Vi protects your files, so in case you try to write to a file that exists,
+it will give you a message:   "foo"  File exists - use "w! foo" to overwrite
+
+<p>
+
+If you want to overwrite the existing file, then you use :w! filename
+
+<pre>
+>> To write over existing file  -->  :w! filename
+</pre>
+
+<b>Quiting only</b></br>
+If you haven't made any changes and simply want to exit, just type ":q".
+If you *have* made changes, but do NOT want to save them, and you want
+to exit, then type ":q!".
+
+<pre>
+>> To quit                       --> :q
+>> To quit (don't save changes)  --> :q!
+</pre>
+
+<b>Shell escapes</b><br>
+If you need to execute a UNIX command while in vi you can make use of
+the shell escape.  Just type ":! command".  Vi will execute your command
+and then return to your editing after you hit RETURN.
+
+<pre>
+>> Execute UNIX command  -->   :! command
+</pre>
+
+Shell escapes are useful for checking on filenames in your directory, or
+maybe reading mail that has recently come in.
+
+<pre>
+Example,  :! ls
+</pre>
+
+(see UNIX help section on alternate ways to do this, re: suspending jobs)
+
+<p>
+
+<b>Opening files</b><br>
+Often times you'll be editing a series of files.  Having to type "vi file1"
+and exiting with :wq each time can be a hassle.  If you know the name of
+your other files, you can open those files from inside vi, by typing
+":e file2".
+
+<pre>
+>> Open another file  -->  :e filename
+</pre>
+
+If you have made changes to your current file, you need to save your
+changes before using ":e" to open another file.  However, as with :w and :q,
+you can override this by using ":e!"
+
+<pre>
+>> Open another file (don't save most recent changes)  -->  :e! filename
+</pre>
+
+<b>Inserting files</b><br>
+If you write a lot of mail message or post a lot of articles to USENET,
+many times you'll want to append or insert other documents into your
+letter or article.  To do this, move your cursor where you want the
+file, and type ":r filename"
+
+<pre>
+>> Insert file at cursor position -->  :r filename
+</pre>
+
+<b>Status line</b><br>
+We saw back in the status line section that CTRL-g gives your file's
+attributes.  An alternative way is to use ":f".  This command also 
+informs you if the file has been changed since you opened it with vi.
+
+<pre>
+>> Show file status  -->   :f
+</pre>
+
+<a name="searchreplace"></a>
+<h2>Search and Replace</h2>
+This is about as complicated as it gets in vi, since search and replace 
+sytnax is taken from the UNIX sed (stream editor) command.  
+
+<pre>
+>> Global search and replace  -->  :1,$ s/old/new/g
+                                     ^  ^  ^   ^  ^
+In english, this means:              |  |  |   |  |
+                                     |  |  |   |  |
+            From 1 to $ (end of file)   |  |   |  |
+                                        |  |   |  |
+            substitute -----------------/  |   |  |
+                                           |   |  |
+            occurrences of "old" ----------/   |  |
+                                               |  |
+            with occurrences of "new" --------/   |
+                                                  |
+            globally (i.e., all instances of "old")
+</pre>
+
+I won't go into details on using sed in this section (see the UNIX sections
+on sed and regular expressions), but you can easily change the range to
+search and replace from by changing "1" and "$" to your needs.
+
+<P>
+
+<!--Footer for every CS homepage:  8/4/96 -->
+
+<br>
+<A HREF="/"><IMG SRC="/icons/marbleleft.gif" ALT=""> Back to CS
+home page</A>
+<br><br>
+<HR width = "80%">
+<center><i>Comments or questions should be sent to <a
+href="mailto:webmaster@cs.fsu.edu">
+   <strong>webmaster@cs.fsu.edu</strong>.</a></i></center>
+   
+
+</BODY>
+</HTML>
+

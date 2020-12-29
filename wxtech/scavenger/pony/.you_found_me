@@ -1,0 +1,9 @@
+Good job! Now keep going!
+
+You'll find a simple python program to tell if a number is wonderous. 
+It loops through 1 to 1000 and determines whether the number is wonderous
+Copy this program to your wxtech directory with the following command:
+
+cp /archive/courses/wxtech/bloop.py bloop.py
+
+Now find a file that will tell you how to run a python script. This one won't be hidden!

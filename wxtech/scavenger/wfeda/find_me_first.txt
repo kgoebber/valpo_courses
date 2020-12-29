@@ -1,0 +1,12 @@
+Well done! 
+You have found this file.
+
+Now, go to /archive/courses/wxtech/scavenger/pony 
+
+In that directory, look for a hidden file with a name
+that suggests you're on the right track.  Follow
+the directions in that file.
+
+Hint: a hidden file is a file whose name begins with a period (".")(e.g. ".htaccess").  You might want to read the help manual for the command "ls".
+
+

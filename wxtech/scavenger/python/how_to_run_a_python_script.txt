@@ -1,0 +1,29 @@
+First copy bloop.py to your own wxtech directory using the following command:
+
+cp /home/kgoebber/wxtech/bloop.py /home/<username>/wxtech/bloop.py
+
+Be sure to replace <username> with your own username (don't put in the carrot brackets)
+
+Now navigate to your folder where you copied bloop.py and then follow the instructions below.
+
+To run a python script you type "python <scriptname>" 
+
+For this question you will want to use the following command:
+
+python bloop.py
+
+After running the script a new file will be in your directory: 'bloop.out'.
+
+First, rename the file "firstname_lastname_wonderous.txt"
+ (where firstname and lastname refer to your own...for example
+    'kevin_goebbert_wonderous.txt').
+
+Then answer the following question:
+
+Are all of the numbers between 1 and 100 wonderous?
+(Hint: you'll want to read the text file that is created after running the python script.)
+
+Finally, copy your renamed file you created running the bloop.py program to
+/home/kgoebber/wxtech/scavenger/answers/kevin
+
+Once you have done that, you have completed the scavenger hunt! Rejoice!
