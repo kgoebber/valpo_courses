@@ -7,7 +7,8 @@ import pandas as pd
 
 date = datetime(2010, 9, 7, 12)
 
-df = pd.read_csv(f'../../data/{date:%Y%m%d}_metar.csv', parse_dates=['date_time'])
+df = pd.read_csv(f'http://bergeron.valpo.edu/archive_surface_data/{date:%Y}/{date:%Y%m%d}_metar.csv',
+                 parse_dates=['date_time'], na_values=[-9999], low_memory=False)
 df['tmpf'] = (df.air_temperature.values * units.degC).to('degF')
 df['dwpf'] = (df.dew_point_temperature.values * units.degC).to('degF')
 
@@ -36,8 +37,8 @@ panel.plots = [obs]
 
 # Bringing it all together
 pc = declarative.PanelContainer()
-pc.size = (10, 10)
+pc.size = (25, 25)
 pc.panels = [panel]
 
-pc.show()
+pc.save(f'sfc_map_{date:%Y%m%d_%H}.png', dpi=150, bbox_inches='tight')
 
