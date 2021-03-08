@@ -12,7 +12,7 @@ df = pd.read_csv(f'http://bergeron.valpo.edu/archive_surface_data/{date:%Y}/{dat
 df['tmpf'] = (df.air_temperature.values * units.degC).to('degF')
 df['dwpf'] = (df.dew_point_temperature.values * units.degC).to('degF')
 
-mslp_formatter = lambda v: format(v*10, '.0f')[2:]
+mslp_formatter = lambda v: format(v*10, '.0f')[-3:]
 
 # Plot desired data
 obs = declarative.PlotObs()
