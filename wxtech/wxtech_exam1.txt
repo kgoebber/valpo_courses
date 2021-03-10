@@ -1,0 +1,4 @@
+The following corresponds to Q1 on the take-home portion of the midterm exam.
+
+Question:
+What is the linux command to let you know what your current working directory is?
