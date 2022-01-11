@@ -1,3 +1,3 @@
 alias ls='ls --color'
 
-source activate valpo-spring-2021
+source activate valpo-spring-2022
