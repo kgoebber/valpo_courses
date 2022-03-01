@@ -140,7 +140,7 @@ def download_alldata(startts=datetime.datetime(2012, 8, 1), endts=datetime.datet
                          parse_dates=['valid'], na_values=['M'],
                          low_memory=False)
         # Convert wx codes to numeric values for plotting purposes
-        df['present_weather'] = wx_code_to_numeric(df['wxcodes'].fillna(''))
+        df['current_wx1_symbol'] = wx_code_to_numeric(df['wxcodes'].fillna(''))
         # Convert cloud cover strings to numeric values for plotting purposes
         df['cloud_cover'] = df.skyc1.fillna('').apply(get_cloud_cover)
         # Compute the u (eastward_wind) and v(northward_wind) components
