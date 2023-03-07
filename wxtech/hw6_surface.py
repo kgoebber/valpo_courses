@@ -1,14 +1,26 @@
 from datetime import datetime, timedelta
+from io import StringIO
+from urllib.request import urlopen
 
+from metpy.io import metar
 from metpy.plots import declarative
 from metpy.units import units
 import pandas as pd
 
-
+# Change data to what you need
 date = datetime(2010, 9, 7, 12)
 
-df = pd.read_csv(f'http://bergeron.valpo.edu/archive_surface_data/{date:%Y}/{date:%Y%m%d}_metar.csv',
-                 parse_dates=['date_time'], na_values=[-9999], low_memory=False)
+# Remote Access - Archive Data Read with pandas from Iowa State Archive, note differences from METAR files
+dt = timedelta(minutes=15)
+sdate = date - dt
+edate = date + dt
+data_url = ('http://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?data=all&tz=Etc/UTC&format=comma&latlon=yes&'
+            f'year1={sdate.year}&month1={sdate.month}&day1={sdate.day}&hour1={sdate.hour}&minute1={sdate.minute}&'
+            f'year2={edate.year}&month2={edate.month}&day2={edate.day}&hour2={edate.hour}&minute2={edate.minute}')
+data = pd.read_csv(data_url, skiprows=5, na_values=['M'], low_memory=False).replace('T', 0.00001).groupby('station').tail(1)
+df = metar.parse_metar_file(StringIO('\n'.join(val for val in data.metar)), year=date.year, month=date.month)
+df['date_time'] = date
+
 df['tmpf'] = (df.air_temperature.values * units.degC).to('degF')
 df['dwpf'] = (df.dew_point_temperature.values * units.degC).to('degF')
 
@@ -21,7 +33,7 @@ obs.time = date
 obs.time_window = timedelta(minutes=15)
 obs.level = None
 obs.fields = ['cloud_coverage', 'tmpf', 'dwpf',
-              'air_pressure_at_sea_level', 'present_weather']
+              'air_pressure_at_sea_level', 'current_wx1_symbol']
 obs.locations = ['C', 'NW', 'SW', 'NE', 'W']
 obs.formats = ['sky_cover', None, None, mslp_formatter, 'current_weather']
 obs.reduce_points = 0.75
@@ -33,6 +45,7 @@ panel.layout = (1, 1, 1)
 panel.projection = 'lcc'
 panel.area = [-105, -65, 25, 46]
 panel.layers = ['states', 'borders', 'coastline']
+panel.title = 'Add an appropriate title'
 panel.plots = [obs]
 
 # Bringing it all together
